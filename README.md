@@ -1,4 +1,6 @@
-# CIS 194 - 2015
+# haskellCourse1
 
-Homework assignments for upenn introductory Haskell class http://www.seas.upenn.edu/~cis194/.
+Homework assignments for introductory Haskell class.
+
+http://www.seas.upenn.edu/~cis194/.
 
