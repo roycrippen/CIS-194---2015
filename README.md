@@ -1,4 +1,4 @@
-# haskellCourse1
+# haskellClass1
 
 Homework assignments for introductory Haskell class.
 
