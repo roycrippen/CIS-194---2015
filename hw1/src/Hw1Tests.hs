@@ -1,7 +1,3 @@
--- CIS 194, Spring 2015
---
--- Test cases for HW 01
-
 module Hw1Tests where
 
 import           Hw1

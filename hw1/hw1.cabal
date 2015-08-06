@@ -1,13 +1,13 @@
 name: hw1
 version: 0.1.0.0
-cabal-version: >= 1.18
+cabal-version: >=1.18
 build-type: Simple
 license: AllRightsReserved
 author: roy
 
 executable hw1
     build-depends:
-        base
+        base -any
     main-is: Main.hs
     buildable: True
     default-language: Haskell2010
@@ -16,8 +16,4 @@ executable hw1
         Hw1
         Hw1Tests
         Testing
-    ghc-options:
-        -O2
-        -Wall
-        -threaded
-        -rtsopts
+    ghc-options: -O2 -Wall -threaded -rtsopts
