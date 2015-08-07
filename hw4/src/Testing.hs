@@ -1,9 +1,8 @@
-{-# OPTIONS_GHC -Wall #-}
 {-# LANGUAGE ExistentialQuantification #-}
 module Testing where
 
-import Data.Maybe
-import Control.Arrow
+import           Control.Arrow (first)
+import           Data.Maybe    (mapMaybe)
 
 data Test    = forall a. Show a => Test String (a -> Bool) [a]
 data Failure = forall a. Show a => Fail String [a]
@@ -19,7 +18,7 @@ runTest (Test s f as) = case filter (not . f) as of
                           fs -> Just $ Fail s fs
 
 runTests :: [Test] -> [Failure]
-runTests = catMaybes . map runTest
+runTests = mapMaybe runTest
 
 -- Helpers
 
@@ -32,4 +31,4 @@ testF2 s f l = Test s (uncurry (==)) $ map (\(x, y, z) -> (f x y, z))  l
 
 testF3 :: (Show a, Show b, Show c, Show d, Eq d) => String -> (a -> b -> c -> d)
        -> [(a, b, c, d)] -> Test
-testF3 s f l = Test s (uncurry (==)) $ map (\(w, x, y, z) ->  (f w x y, z)) l{-# OPTIONS_GHC -Wall #-}
+testF3 s f l = Test s (uncurry (==)) $ map (\(w, x, y, z) ->  (f w x y, z)) l

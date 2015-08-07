@@ -17,4 +17,4 @@ executable hw4
         Hw4
         Hw4Tests
         Testing
-    ghc-options: -O2 -Wall -threaded -rtsopts
+    ghc-options: -O2 -threaded -rtsopts

@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleInstances #-}
-
 module Hw4 where
-import Data.List
+
+import           Data.List (transpose)
 
 newtype Poly a = P [a]
 
