@@ -23,8 +23,8 @@ main = do
     cList <-  sample 10 $ allCodes 6
     let resultList = map (\x -> x == getCode  (head $ solve x)) cList
     -- print resultList
-    let resultMsg = if False `elem` resultList
-                        then "\nsomething failed on 10 tests of 6 random codes"
-                        else "\n10 tests of 6 random codes passed"
+    let resultMsg = if False `notElem` resultList
+                        then "\n10 tests of 6 random codes passed"
+                        else "\nsomething failed on 10 tests of 6 random codes"
     putStrLn resultMsg
     putStrLn "done..."
