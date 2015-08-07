@@ -4,7 +4,7 @@ cabal-version: >=1.18
 build-type: Simple
 license: AllRightsReserved
 author: roy
- 
+
 executable hw6
     build-depends:
         base -any,

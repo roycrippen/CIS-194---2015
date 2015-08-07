@@ -12,5 +12,7 @@ main = do
     if null a
         then putStrLn "all tests ok"
         else print a
+    print ("fib 24 = 75025", fib 24)
+    print ("first 25 fibs = ", take 25 fibs1)
     putStrLn "done..."
     putStrLn appMsg
