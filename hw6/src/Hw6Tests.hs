@@ -6,6 +6,7 @@ import Testing
 --import Control.Applicative
 import Test.QuickCheck
 
+
 -- Exercise 1 -----------------------------------------
 tinyNonNegativeIntegers :: Gen Int
 tinyNonNegativeIntegers = choose (0, 25)
