@@ -1,11 +1,9 @@
 {-# OPTIONS_GHC -Wall #-}
+--{-# LANGUAGE BangPatterns #-}
 module Hw6 where
 
 import Data.List
 import Data.Functor
-
-appMsg :: String
-appMsg = "Homework 6 functions..."
 
 -- Exercise 1 -----------------------------------------
 fib :: Integer -> Integer
@@ -18,7 +16,7 @@ fibs1 = [ fib n | n <- [0..] ]
 
 -- Exercise 2 -----------------------------------------
 fibs2 :: [Integer]
-fibs2 = undefined
+fibs2 = 1 : 1 : zipWith (+) fibs2 (tail fibs2)
 
 -- Exercise 3 -----------------------------------------
 data Stream a = Cons a (Stream a)

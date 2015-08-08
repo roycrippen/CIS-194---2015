@@ -2,39 +2,33 @@ module Hw6Tests where
 
 import Hw6
 import Testing
-import System.Random (randomRIO)
-import Data.List
-import Control.Applicative
-
--- Exercise 0 example ------------------------------------
-testLength :: String -> Int
-testLength = length
-
-testTrue :: Int -> Bool
-testTrue n = n == 1
-
-ex0Tests :: [Test]
-ex0Tests = [ testF1 "example test" testLength
-             [ ("abc", 3)
-             , ("aaaa", 4), ("", 0)
-             , (appMsg, 23)
-             ]
-           , testF1 "another example" testTrue
-
-             [ (1, True)
-             , (0, False)
-             , (10, False)
-             ]
-           ]
-
+--import Data.List
+--import Control.Applicative
+import Test.QuickCheck
 
 -- Exercise 1 -----------------------------------------
-ex1Tests :: [Test]
-ex1Tests = []
+tinyNonNegativeIntegers :: Gen Int
+tinyNonNegativeIntegers = choose (0, 25)
+
+prop_Fibonacci1 :: Property
+prop_Fibonacci1 =
+  forAll tinyNonNegativeIntegers $ \n ->
+    let x = fibs1 !! (n)
+        y = fibs1 !! (n+1)
+        z = fibs1 !! (n+2)
+    in x + y == z
 
 -- Exercise 2 -----------------------------------------
-ex2Tests :: [Test]
-ex2Tests = []
+smallNonNegativeIntegers :: Gen Int
+smallNonNegativeIntegers = choose (0, 500)
+
+prop_Fibonacci2 :: Property
+prop_Fibonacci2 =
+  forAll smallNonNegativeIntegers $ \n ->
+    let x = fibs2 !! (n)
+        y = fibs2 !! (n+1)
+        z = fibs2 !! (n+2)
+    in x + y == z
 
 -- Exercise 3 -----------------------------------------
 ex3Tests :: [Test]
@@ -54,6 +48,13 @@ ex6Tests = []
 
 
 -- All Tests -----------------------------------------
+ex0Tests :: [Test]
+ex0Tests = []
+ex1Tests :: [Test]
+ex1Tests = []
+ex2Tests :: [Test]
+ex2Tests = []
+
 allTests :: [Test]
 allTests = concat [ ex0Tests
                   , ex1Tests
@@ -63,23 +64,3 @@ allTests = concat [ ex0Tests
                   , ex5Tests
                   , ex6Tests
                   ]
-
--- system tests -------------------------------------------
-
--- random list generator of n elements
--- example in main: myList = sample n $ allPossibilitiesList
--- below, 100 element list of random ints between 0 and 1000
---                  myIntList = sample 100 $ [0..1000]
-
-sample :: (Eq t) => Int -> [t] -> IO [t]
-sample 0 _ = return []
-sample n xs = do
-  let l = min n (length xs)
-  val <- sample1 xs
-  (:) <$> pure val <*> sample (l-1) (delete val xs)
-
-sample1 :: [b] -> IO b
-sample1 xs = do
-  let l = length xs - 1
-  idx <- randomRIO (0, l)
-  return $ xs !! idx
