@@ -2,7 +2,7 @@
 to run tests -----------------------
    cabal configure --enable-tests
    cabal build
-   cabal test      or   cabal test --show-details=streamin
+   cabal test      or   cabal test --show-details=always
    best is to run test executable from dist/build/<test dir>...
 -}
 
@@ -26,8 +26,10 @@ tests = [
                 testProperty "fibs1" prop_Fibonacci1,
                 testProperty "fibs2" prop_Fibonacci2
             ],
-        testGroup "test Group 2" [
-                testCase "simple test" simpleTest
+        testGroup "Streams" [
+        testProperty "Create Int streams" prop_IntStreamCreate,
+        testProperty "Create String streams" prop_StringStreamCreate,
+        testProperty "Create String List streams" prop_StringListStreamCreate
             ]
     ]
 
@@ -57,3 +59,28 @@ prop_Fibonacci2 =
         y = fibs2 !! (n+1)
         z = fibs2 !! (n+2)
     in x + y == z
+
+-- Exercise 3 -----------------------------------------
+prop_IntStreamCreate :: Int -> Int -> Bool
+prop_IntStreamCreate n a =
+    takeStream n (stream a) == replicate n a
+
+prop_StringStreamCreate :: Int -> String -> Bool
+prop_StringStreamCreate n a =
+    takeStream n (stream a) == replicate n a
+
+prop_StringListStreamCreate :: Int -> [String] -> Bool
+prop_StringListStreamCreate n a =
+    takeStream n (stream a) == replicate n a
+
+
+
+
+
+
+
+
+
+
+-- Exercise 2 -----------------------------------------
+-- Exercise 2 -----------------------------------------

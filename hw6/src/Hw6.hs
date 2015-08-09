@@ -27,7 +27,13 @@ instance Show a => Show (Stream a) where
              ++ ",..."
 
 streamToList :: Stream a -> [a]
-streamToList = undefined
+streamToList (Cons x xs) = x : streamToList xs
+
+takeStream :: Int -> Stream a -> [a]
+takeStream n s = take n $ streamToList s
+
+stream :: a -> Stream a
+stream x = s where s = Cons x s
 
 -- Exercise 4 -----------------------------------------
 instance Functor Stream where
