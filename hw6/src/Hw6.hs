@@ -29,28 +29,22 @@ instance Show a => Show (Stream a) where
 streamToList :: Stream a -> [a]
 streamToList (Cons x xs) = x : streamToList xs
 
-takeStream :: Int -> Stream a -> [a]
-takeStream n s = take n $ streamToList s
-
-stream :: a -> Stream a
-stream x = s where s = Cons x s
-
 -- Exercise 4 -----------------------------------------
 instance Functor Stream where
-    fmap = undefined
+    fmap f (Cons x xs) = Cons (f x) (fmap f xs)
 
 -- Exercise 5 -----------------------------------------
 sRepeat :: a -> Stream a
-sRepeat = undefined
+sRepeat x = Cons x (sRepeat x)
 
 sIterate :: (a -> a) -> a -> Stream a
-sIterate = undefined
+sIterate ur seed = Cons seed (sIterate ur (ur seed))
 
 sInterleave :: Stream a -> Stream a -> Stream a
-sInterleave (Cons _ _) _ = undefined
+sInterleave (Cons x xs) ys = Cons x (sInterleave ys xs)
 
 sTake :: Int -> Stream a -> [a]
-sTake = undefined
+sTake n s = take n $ streamToList s
 
 -- Exercise 6 -----------------------------------------
 nats :: Stream Integer
