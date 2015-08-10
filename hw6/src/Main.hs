@@ -15,4 +15,7 @@ main = do
     putStrLn $ "ruler = " ++ show (take 32 $ streamToList ruler)
     putStrLn $ "random from seed 7666532 = " ++ show (rand 7666532)
     putStrLn $ "(min, max) of 1M randoms = " ++ show (minMax $ sTake 1000000 $ rand 7666532)
+    let n = 10000000
+    putStrLn $ "(fastFib n+2 == fastFib n+1 + fastFib n), n = 10,000,000 = " ++
+        show (fastFib (n+2) == fastFib (n+1) + fastFib n)
     putStrLn "done..."

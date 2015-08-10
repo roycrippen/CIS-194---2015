@@ -7,20 +7,14 @@ to run tests -----------------------
 -}
 
 import           Hw6
-
---import Data.Monoid (mempty)
---import Test.Framework.Options (TestOptions, TestOptions'(..))
---import Test.Framework.Runners.Options (RunnerOptions, RunnerOptions'(..))
 import           Test.Framework                       (defaultMain, testGroup)
 import           Test.Framework.Providers.HUnit
 import           Test.Framework.Providers.QuickCheck2 (testProperty)
-
 import           Test.HUnit
 import           Test.QuickCheck
 
 main :: IO ()
 main = defaultMain tests
-
 
 tests = [
         testGroup "Fibonacci tests" [
@@ -39,13 +33,15 @@ tests = [
                 testProperty "mapping String List" prop_StringFmap
             ],
         testGroup "test ruler element 2^n - 1" [
-        testCase "ruler element n=3" test_rulerElement3,
-        testCase "ruler element n=6" test_rulerElement6,
-        testCase "ruler element n=12" test_rulerElement12,
-        testCase "ruler element n=20" test_rulerElement20
+        testCase "ruler element n=3" test_RulerElement3,
+        testCase "ruler element n=6" test_RulerElement6,
+        testCase "ruler element n=12" test_RulerElement12,
+        testCase "ruler element n=20" test_RulerElement20
+            ],
+        testGroup "fastFib" [
+                testProperty "fastFib n = 0 to 10,000" prop_FastFib
             ]
         ]
-
 
 -- Exercise 1 -----------------------------------------
 tinyNonNegativeIntegers :: Gen Int
@@ -107,14 +103,26 @@ prop_StringFmap s =
     sTake 10 (fmap (\x -> x ++ x) (sRepeat s)) == replicate 10 ((\ x -> x ++ x) s)
 
 -- Exercise 6 -----------------------------------------
-test_rulerElement3 :: Assertion
-test_rulerElement3 = (streamToList ruler !! 7) @?= 3
+test_RulerElement3 :: Assertion
+test_RulerElement3 = (streamToList ruler !! 7) @?= 3
 
-test_rulerElement6 :: Assertion
-test_rulerElement6 = (streamToList ruler !! 63) @?= 6
+test_RulerElement6 :: Assertion
+test_RulerElement6 = (streamToList ruler !! 63) @?= 6
 
-test_rulerElement12 :: Assertion
-test_rulerElement12 = (streamToList ruler !! 4095) @?= 12
+test_RulerElement12 :: Assertion
+test_RulerElement12 = (streamToList ruler !! 4095) @?= 12
 
-test_rulerElement20 :: Assertion
-test_rulerElement20 = (streamToList ruler !! 1048575) @?= 20
+test_RulerElement20 :: Assertion
+test_RulerElement20 = (streamToList ruler !! 1048575) @?= 20
+
+-- Exercise 10 -----------------------------------------
+nonNegativeIntegers :: Gen Int
+nonNegativeIntegers = choose (0, 10000)
+
+prop_FastFib :: Property
+prop_FastFib =
+    forAll nonNegativeIntegers $ \n ->
+    let x = fastFib n
+        y = fastFib (n+1)
+        z = fastFib (n+2)
+    in x + y == z

@@ -1,9 +1,8 @@
 {-# OPTIONS_GHC -Wall #-}
-{-# LANGUAGE BangPatterns #-}
-module Hw6 where
+--{-# LANGUAGE BangPatterns #-}
 
+module Hw6 where
 import Data.List
---import Data.Functor
 
 -- Exercise 1 -----------------------------------------
 fib :: Integer -> Integer
@@ -70,11 +69,26 @@ minMaxSlow xs = Just (minimum xs, maximum xs)
 minMax :: [Int] -> Maybe (Int, Int)
 minMax = go 9999999999 0
     where go mn mx [] = Just (mn, mx)
-          go !mn !mx (x:xs)
+          go mn mx (x:xs)
               | x < mn = go x mx xs
               | x > mx = go mn x xs
               | otherwise = go mn mx xs
 
 -- Exercise 10 ----------------------------------------
+newtype Matrix a = M [[a]] deriving (Eq, Show)
+
+mFib :: Matrix Integer
+mFib = M [[1,1], [1,0]]
+
+instance Num a => Num (Matrix a) where
+    M a * M b = M [ [ sum $ zipWith (*) ar bc | bc <- transpose b ] | ar <- a ]
+    M a + M b = M (zipWith (zipWith (+)) a b)
+    M a - M b = M (zipWith (zipWith (-)) a b)
+    negate (M a) = M (map (map negate) a)
+    fromInteger x = M (iterate (0:) (fromInteger x : repeat 0))
+    abs m = m
+    signum _ = 1
+
 fastFib :: Int -> Integer
-fastFib = undefined
+fastFib n = head . head $ matrix
+    where (M matrix) = mFib^n
