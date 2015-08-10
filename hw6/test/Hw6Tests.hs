@@ -21,6 +21,7 @@ import           Test.QuickCheck
 main :: IO ()
 main = defaultMain tests
 
+
 tests = [
         testGroup "Fibonacci tests" [
                 testProperty "fibs1" prop_Fibonacci1,
@@ -99,11 +100,11 @@ prop_Interleave (NonNegative n) s1 s2 =
 -- Exercise 4 -----------------------------------------
 prop_IntegerFmap :: Integer -> Bool
 prop_IntegerFmap n =
-    sTake 10 (fmap (*10) (sRepeat n)) == map (*10) (replicate 10 n)
+    sTake 10 (fmap (*10) (sRepeat n)) == replicate 10 ((* 10) n)
 
 prop_StringFmap :: String -> Bool
 prop_StringFmap s =
-    sTake 10 (fmap (\x -> x ++ x) (sRepeat s)) == map (\x -> x ++ x) (replicate 10 s)
+    sTake 10 (fmap (\x -> x ++ x) (sRepeat s)) == replicate 10 ((\ x -> x ++ x) s)
 
 -- Exercise 6 -----------------------------------------
 test_rulerElement3 :: Assertion

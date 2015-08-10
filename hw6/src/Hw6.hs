@@ -1,9 +1,9 @@
 {-# OPTIONS_GHC -Wall #-}
---{-# LANGUAGE BangPatterns #-}
+{-# LANGUAGE BangPatterns #-}
 module Hw6 where
 
 import Data.List
-import Data.Functor
+--import Data.Functor
 
 -- Exercise 1 -----------------------------------------
 fib :: Integer -> Integer
@@ -57,21 +57,23 @@ ruler = sInterleaveList (streamToList (fmap sRepeat nats))
 -- Exercise 7 -----------------------------------------
 -- | Implementation of C rand
 rand :: Int -> Stream Int
-rand = undefined
+rand = sIterate (\x -> (1103515245 * x + 12345) `mod` 2147483648)
 
 -- Exercise 8 -----------------------------------------
-{- Total Memory in use: ??? MB -}
+{- Total Memory in use: 91 MB -}
 minMaxSlow :: [Int] -> Maybe (Int, Int)
 minMaxSlow [] = Nothing   -- no min or max if there are no elements
 minMaxSlow xs = Just (minimum xs, maximum xs)
 
 -- Exercise 9 -----------------------------------------
-{- Total Memory in use: ??? MB -}
+{- Total Memory in use: 1 MB -}
 minMax :: [Int] -> Maybe (Int, Int)
-minMax = undefined
-
---main :: IO ()
---main = print $ minMaxSlow $ sTake 1000000 $ rand 7666532
+minMax = go 9999999999 0
+    where go mn mx [] = Just (mn, mx)
+          go !mn !mx (x:xs)
+              | x < mn = go x mx xs
+              | x > mx = go mn x xs
+              | otherwise = go mn mx xs
 
 -- Exercise 10 ----------------------------------------
 fastFib :: Int -> Integer
