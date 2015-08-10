@@ -6,17 +6,17 @@ to run tests -----------------------
    best is to run test executable from dist/build/<test dir>...
 -}
 
-import Hw6
+import           Hw6
 
 --import Data.Monoid (mempty)
 --import Test.Framework.Options (TestOptions, TestOptions'(..))
 --import Test.Framework.Runners.Options (RunnerOptions, RunnerOptions'(..))
-import Test.Framework (defaultMain, testGroup)
-import Test.Framework.Providers.HUnit
-import Test.Framework.Providers.QuickCheck2 (testProperty)
+import           Test.Framework                       (defaultMain, testGroup)
+import           Test.Framework.Providers.HUnit
+import           Test.Framework.Providers.QuickCheck2 (testProperty)
 
-import Test.QuickCheck
-import Test.HUnit
+import           Test.HUnit
+import           Test.QuickCheck
 
 main :: IO ()
 main = defaultMain tests
@@ -36,11 +36,15 @@ tests = [
         testGroup "fmap stream" [
                 testProperty "mapping Integer List" prop_IntegerFmap,
                 testProperty "mapping String List" prop_StringFmap
+            ],
+        testGroup "test ruler element 2^n - 1" [
+        testCase "ruler element n=3" test_rulerElement3,
+        testCase "ruler element n=6" test_rulerElement6,
+        testCase "ruler element n=12" test_rulerElement12,
+        testCase "ruler element n=20" test_rulerElement20
             ]
         ]
 
-simpleTest :: Assertion
-simpleTest = True @?= True
 
 -- Exercise 1 -----------------------------------------
 tinyNonNegativeIntegers :: Gen Int
@@ -100,3 +104,16 @@ prop_IntegerFmap n =
 prop_StringFmap :: String -> Bool
 prop_StringFmap s =
     sTake 10 (fmap (\x -> x ++ x) (sRepeat s)) == map (\x -> x ++ x) (replicate 10 s)
+
+-- Exercise 6 -----------------------------------------
+test_rulerElement3 :: Assertion
+test_rulerElement3 = (streamToList ruler !! 7) @?= 3
+
+test_rulerElement6 :: Assertion
+test_rulerElement6 = (streamToList ruler !! 63) @?= 6
+
+test_rulerElement12 :: Assertion
+test_rulerElement12 = (streamToList ruler !! 4095) @?= 12
+
+test_rulerElement20 :: Assertion
+test_rulerElement20 = (streamToList ruler !! 1048575) @?= 20

@@ -1,6 +1,6 @@
 module Main where
 
-import Hw6
+import           Hw6
 
 main :: IO()
 main = do
@@ -11,4 +11,6 @@ main = do
     putStrLn $ "stream [1,2,3] = " ++  show (sRepeat [1,2,3])
     putStrLn $ "iterate x and o = " ++ show (sIterate ('x' :) "o")
     putStrLn $ "interleave a and b =  " ++ show (sInterleave (sRepeat 'a') (sRepeat 'b'))
+    putStrLn $ "nats: sIterate (+1) 0 = " ++ show (sIterate (+1) 0)
+    putStrLn $ "ruler = " ++ show (take 32 $ streamToList ruler)
     putStrLn "done..."

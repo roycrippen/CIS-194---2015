@@ -48,10 +48,11 @@ sTake n s = take n $ streamToList s
 
 -- Exercise 6 -----------------------------------------
 nats :: Stream Integer
-nats = undefined
+nats = sIterate (+1) 0
 
 ruler :: Stream Integer
-ruler = undefined
+ruler = sInterleaveList (streamToList (fmap sRepeat nats))
+    where sInterleaveList ~(x:xs) = sInterleave x (sInterleaveList xs)
 
 -- Exercise 7 -----------------------------------------
 -- | Implementation of C rand
