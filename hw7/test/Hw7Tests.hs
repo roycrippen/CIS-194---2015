@@ -6,6 +6,7 @@ to run tests -----------------------
    best is to run test executable from dist/build/<test dir>...
 -}
 
+import           Control.Monad.Random
 import           Data.Vector as V
 import           Hw7
 import           Test.Framework                       (defaultMain, testGroup)
@@ -23,6 +24,14 @@ tests = [
                 testCase "trivial" test_Aaa
             ]
         ]
+
+
+
+
+
+
+
+
 
 -- Exercise 10 -----------------------------------------
 

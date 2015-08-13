@@ -7,16 +7,16 @@ module Hw7 where
 import           Cards
 import           Data.List            (transpose)
 
-import           Control.Monad        (liftM, liftM2, replicateM)
-import           Control.Monad.Random (Rand, evalRandIO, getRandom, getRandomR)
+import           Control.Monad        (liftM2, replicateM)
+import           Control.Monad.Random (Rand, getRandom, getRandomR)
 import           Data.Functor
 import           Data.Monoid
 import           Data.Vector          (Vector, (!), (!?), (//))
 import qualified Data.Vector          as V
-import           Debug.Trace          (traceShow)
+--import           Debug.Trace          (traceShow)
 import           System.Random
 
-traceShow' arg = traceShow arg arg
+--traceShow' arg = traceShow arg arg
 
 -- Exercise 1 -----------------------------------------
 liftM' :: Monad m => (a -> b) -> m a -> m b
@@ -34,7 +34,7 @@ swapV ix iy v = liftM2 f x y
           f x' y' = v // [(ix, y'), (iy, x')]
 
 -- Exercise 2 -----------------------------------------
-mapM' :: Monad m => (a -> m b) -> [a] -> m [b]
+mapM' :: Monad m => (a -> m b) -> [a] -> m [b]--rnd0to9 :: IO ()
 mapM' f as = sequence (map f as)
 
 getElts :: [Int] -> Vector a -> Maybe [a]
@@ -45,20 +45,27 @@ type Rnd a = Rand StdGen a
 
 randomElt :: Vector a -> Rnd (Maybe a)
 randomElt vect
-    | len == 0 = liftM (vect !?) (getRandomR (1, 1)) -- force a Rnd (Nothing)
-    |otherwise = liftM (vect !?) (getRandomR (0, len - 1))
+    | len == 0 = liftM' (vect !?) (getRandomR (1, 1)) -- force a Rnd (Nothing)
+    |otherwise = liftM' (vect !?) (getRandomR (0, len - 1))
     where len = V.length vect
 
 -- Exercise 4 -----------------------------------------
 randomVec :: Random a => Int -> Rnd (Vector a)
-randomVec n = liftM V.fromList (replicateM n getRandom)
+randomVec n = liftM' V.fromList (replicateM n getRandom)
 
 randomVecR :: Random a => Int -> (a, a) -> Rnd (Vector a)
-randomVecR n (lo, hi) = liftM V.fromList (replicateM n $ getRandomR (lo, hi))
+randomVecR n (lo, hi) = liftM' V.fromList (replicateM n $ getRandomR (lo, hi))
 
 -- Exercise 5 -----------------------------------------
 shuffle :: Vector a -> Rnd (Vector a)
-shuffle = undefined
+shuffle vect = go vect (V.length vect)
+    where go :: Vector a -> Int -> Rnd (Vector a)
+          go v i
+              | i == 1    = return v
+              | otherwise = do
+                 let i' = i - 1
+                 rnd <- getRandomR (0, i')
+                 go (unsafeSwapV i' rnd v) i'
 
 unsafeSwapV :: Int -> Int -> Vector a -> Vector a
 unsafeSwapV ix iy v = f x y
@@ -67,31 +74,61 @@ unsafeSwapV ix iy v = f x y
           f x' y' = v // [(ix, y'), (iy, x')]
 
 -- Exercise 6 -----------------------------------------
-
 partitionAt :: Ord a => Vector a -> Int -> (Vector a, a, Vector a)
-partitionAt = undefined
+partitionAt vect pivotIdx = (lesserVect, pivotVal, greaterVect)
+    where pivotVal = vect ! pivotIdx
+          (l, r) = V.splitAt pivotIdx vect
+          vect' = l V.++ V.drop 1 r
+          lesserVect = V.filter (< pivotVal) vect'
+          greaterVect = V.filter (>= pivotVal) vect'
 
 -- Exercise 7 -----------------------------------------
-
 -- Quicksort
 quicksort :: Ord a => [a] -> [a]
 quicksort [] = []
 quicksort (x:xs) = quicksort [ y | y <- xs, y < x ]
-                   <> (x : quicksort [ y | y <- xs, y >= x ])
+    <> (x : quicksort [ y | y <- xs, y >= x ])
+
+-- readable quicksort
+quicksort' :: Ord a => [a] -> [a]
+quicksort' [] = []
+quicksort' (x:xs) = quicksort' lesser ++ [x] ++ quicksort' greater
+    where lesser  = [ y | y <- xs, y < x ]
+          greater = [ y | y <- xs, y >= x ]
 
 qsort :: Ord a => Vector a -> Vector a
-qsort = undefined
+qsort vect
+    | V.length vect == 0 = vect
+    | otherwise     = qsort lesser V.++ x V.++ qsort greater
+        where (x,xs) = V.splitAt 1 vect
+              lesser  = [ y | y <- xs, y <  x ! 0 ]
+              greater = [ y | y <- xs, y >=  x ! 0 ]
 
 -- Exercise 8 -----------------------------------------
-
+-- much quicker than qsort
 qsortR :: Ord a => Vector a -> Rnd (Vector a)
-qsortR = undefined
+qsortR vect
+    | V.length vect == 0 = return vect
+    | otherwise          = do
+            rnd <- getRandomR (0, V.length vect - 1)
+            let (lesser, pivot, greater) = partitionAt vect rnd
+            l <- qsortR lesser
+            r <- qsortR greater
+            return (l V.++ V.cons pivot  r)
 
 -- Exercise 9 -----------------------------------------
-
 -- Selection
 select :: Ord a => Int -> Vector a -> Rnd (Maybe a)
-select = undefined
+select rank vect
+    | V.length vect == 0 = return Nothing
+    | otherwise          = do
+            rnd <- getRandomR (0, V.length vect - 1)
+            let (lesser, pivot, greater) = partitionAt vect rnd
+                lenLeft = V.length lesser
+            case () of
+                _| rank < lenLeft  -> select rank lesser
+                 | rank == lenLeft -> return $ Just pivot
+                 | otherwise       -> select (rank - lenLeft - 1) greater
 
 newDeck :: Rnd Deck
 newDeck =  undefined
