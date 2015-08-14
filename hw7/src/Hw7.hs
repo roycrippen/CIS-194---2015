@@ -5,20 +5,15 @@
 module Hw7 where
 
 import           Cards
-import           Data.List            (transpose)
-
 import           Control.Monad        (liftM2, replicateM)
 import           Control.Monad.Random (Rand, getRandom, getRandomR)
 import           Data.Functor
 import           Data.Monoid
 import           Data.Vector          (Vector, (!), (!?), (//))
 import qualified Data.Vector          as V
---import           Debug.Trace          (traceShow)
 import           System.Random
 
---traceShow' arg = traceShow arg arg
-
--- Exercise 1 -----------------------------------------
+--- Exercise 1 -----------------------------------------
 liftM' :: Monad m => (a -> b) -> m a -> m b
 liftM' f ma  = do   -- readable
     a <- ma
@@ -99,7 +94,7 @@ quicksort' (x:xs) = quicksort' lesser ++ [x] ++ quicksort' greater
 qsort :: Ord a => Vector a -> Vector a
 qsort vect
     | V.length vect == 0 = vect
-    | otherwise     = qsort lesser V.++ x V.++ qsort greater
+    | otherwise          = qsort lesser V.++ x V.++ qsort greater
         where (x,xs) = V.splitAt 1 vect
               lesser  = [ y | y <- xs, y <  x ! 0 ]
               greater = [ y | y <- xs, y >=  x ! 0 ]
@@ -110,11 +105,11 @@ qsortR :: Ord a => Vector a -> Rnd (Vector a)
 qsortR vect
     | V.length vect == 0 = return vect
     | otherwise          = do
-            rnd <- getRandomR (0, V.length vect - 1)
-            let (lesser, pivot, greater) = partitionAt vect rnd
-            l <- qsortR lesser
-            r <- qsortR greater
-            return (l V.++ V.cons pivot  r)
+        rnd <- getRandomR (0, V.length vect - 1)
+        let (lesser, pivot, greater) = partitionAt vect rnd
+        l <- qsortR lesser
+        r <- qsortR greater
+        return (l V.++ V.cons pivot  r)
 
 -- Exercise 9 -----------------------------------------
 -- Selection
@@ -122,29 +117,43 @@ select :: Ord a => Int -> Vector a -> Rnd (Maybe a)
 select rank vect
     | V.length vect == 0 = return Nothing
     | otherwise          = do
-            rnd <- getRandomR (0, V.length vect - 1)
-            let (lesser, pivot, greater) = partitionAt vect rnd
-                lenLeft = V.length lesser
-            case () of
-                _| rank < lenLeft  -> select rank lesser
-                 | rank == lenLeft -> return $ Just pivot
-                 | otherwise       -> select (rank - lenLeft - 1) greater
+        rnd <- getRandomR (0, V.length vect - 1)
+        let (lesser, pivot, greater) = partitionAt vect rnd
+            lenLeft = V.length lesser
+        case () of
+            _| rank < lenLeft  -> select rank lesser
+             | rank == lenLeft -> return $ Just pivot
+             | otherwise       -> select (rank - lenLeft - 1) greater
+
+allCards :: Deck
+allCards = [ Card l s | s <- suits, l <- labels ]
+
+allCards' :: Deck
+allCards' = do s <- suits
+               l <- labels
+               return (Card l s)
 
 newDeck :: Rnd Deck
-newDeck =  undefined
+newDeck = shuffle allCards
 
 -- Exercise 11 ----------------------------------------
-
 nextCard :: Deck -> Maybe (Card, Deck)
-nextCard = undefined
+nextCard d
+    | V.length d == 0 = Nothing
+    | otherwise       = Just (V.head d, V.tail d)
 
 -- Exercise 12 ----------------------------------------
-
 getCards :: Int -> Deck -> Maybe ([Card], Deck)
-getCards = undefined
+--getCards = undefined
+getCards n d
+    | V.length d < n = Nothing
+    | otherwise      = go n d []
+        where go 0  d' cs  = Just (cs, d')
+              go n' d' cs = do
+                  (c, deck) <- nextCard d'
+                  go (n' - 1) deck (c:cs)
 
 -- Exercise 13 ----------------------------------------
-
 data State = State { money :: Int, deck :: Deck }
 
 repl :: State -> IO ()
@@ -152,7 +161,7 @@ repl s@State{..} | money <= 0  = putStrLn "You ran out of money!"
                  | V.null deck = deckEmpty
                  | otherwise   = do
   putStrLn $ "You have \ESC[32m$" ++ show money ++ "\ESC[0m"
-  putStrLn "Would you like to play (y/n)?"
+  putStr "Would you like to play (y/n)? "
   cont <- getLine
   if cont == "n"
   then putStrLn $ "You left the casino with \ESC[32m$"
@@ -161,15 +170,16 @@ repl s@State{..} | money <= 0  = putStrLn "You ran out of money!"
     where deckEmpty = putStrLn $ "The deck is empty. You got \ESC[32m$"
                       ++ show money ++ "\ESC[0m"
           play = do
-            putStrLn "How much do you want to bet?"
-            amt <- read <$> getLine
+            putStr "How much do you want to bet? "
+            amt' <- readMaybe <$> getLine  --fixes read error
+            let amt = maybe 0 (+0) amt' -- Nothing -> 0 else amount
             if amt < 1 || amt > money
             then play
             else -- do
               case getCards 2 deck of
                 Just ([c1, c2], d) -> do
-                  putStrLn $ "You got:\n" ++ show c1
-                  putStrLn $ "I got:\n" ++ show c2
+                  putStrLn $ "You got:" ++ show c1
+                  putStrLn $ "  I got:" ++ show c2
                   case () of
                     _ | c1 >  c2  -> repl $ State (money + amt) d
                       | c1 <  c2  -> repl $ State (money - amt) d
@@ -179,8 +189,8 @@ repl s@State{..} | money <= 0  = putStrLn "You ran out of money!"
             putStrLn "War!"
             case getCards 6 d of
               Just ([c11, c21, c12, c22, c13, c23], d') -> do
-                putStrLn $ "You got\n" ++ ([c11, c12, c13] >>= show)
-                putStrLn $ "I got\n" ++ ([c21, c22, c23] >>= show)
+                putStrLn $ "You got:" ++ ([c11, c12, c13] >>= show)
+                putStrLn $ "  I got:" ++ ([c21, c22, c23] >>= show)
                 case () of
                   _ | c13 > c23 -> repl $ State (m + amt) d'
                     | c13 < c23 -> repl $ State (m - amt) d'
@@ -190,22 +200,8 @@ repl s@State{..} | money <= 0  = putStrLn "You ran out of money!"
 --main :: IO ()
 --main = evalRandIO newDeck >>= repl . State 100
 
-
--- Exercise 10 ----------------------------------------
-newtype Matrix a = M [[a]] deriving (Eq, Show)
-
-mFib :: Matrix Integer
-mFib = M [[1,1], [1,0]]
-
-instance Num a => Num (Matrix a) where
-    M a * M b = M [ [ sum $ zipWith (*) ar bc | bc <- transpose b ] | ar <- a ]
-    M a + M b = M (zipWith (zipWith (+)) a b)
-    M a - M b = M (zipWith (zipWith (-)) a b)
-    negate (M a) = M (map (map negate) a)
-    fromInteger x = M (iterate (0:) (fromInteger x : repeat 0))
-    abs m = m
-    signum _ = 1
-
-fastFib :: Int -> Integer
-fastFib n = head . head $ matrix
-    where (M matrix) = mFib^n
+-- orginal version crashed on amt read for non-number
+readMaybe        :: (Read a) => String -> Maybe a
+readMaybe s      =  case [x | (x,t) <- reads s, ("","") <- lex t] of
+                         [x] -> Just x
+                         _   -> Nothing
