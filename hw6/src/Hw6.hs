@@ -1,5 +1,4 @@
 {-# OPTIONS_GHC -Wall #-}
---{-# LANGUAGE BangPatterns #-}
 
 module Hw6 where
 import Data.List
