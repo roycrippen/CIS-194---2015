@@ -19,7 +19,7 @@ executable hw6
     hs-source-dirs: src
     other-modules:
         Hw6
-    ghc-options: -O2 -threaded -rtsopts
+    ghc-options: -O2 -threaded -rtsopts 
 
 test-suite hw6Test
     build-depends:
