@@ -1,3 +1,3 @@
-Homework assignments for introductory Haskell class CIS 194, Spring 2015.
+Homework assignments for CIS 194, Spring 2013 http://www.seas.upenn.edu/~cis194/spring13/.
 
-http://www.seas.upenn.edu/~cis194/.
+Homework assignments for CIS 194, Spring 2015 http://www.seas.upenn.edu/~cis194/.
