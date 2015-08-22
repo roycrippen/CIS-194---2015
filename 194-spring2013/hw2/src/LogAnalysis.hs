@@ -72,4 +72,4 @@ testSolution fp = do
         eGT49 = filter (\x -> (read $ words x !! 1 ::Int) > 49) e
         s = map (\x -> (read $ words x !! 2 ::Int, unwords $ drop 3 $ words x)) eGT49
         s' = sortBy (compare `on` fst) s
-    return (map snd s')
+    return (map snd s') 

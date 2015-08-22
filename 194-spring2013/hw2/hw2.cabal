@@ -16,3 +16,4 @@ executable hw2
         Log,
         LogAnalysis
     ghc-options: -O2 -Wall -threaded -rtsopts
+

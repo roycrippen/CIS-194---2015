@@ -35,4 +35,4 @@ testWhatWentWrong :: (String -> [LogMessage])
                   -> FilePath
                   -> IO [String]
 testWhatWentWrong parse whatWentWrong file
-  = whatWentWrong . parse <$> readFile file
+  = whatWentWrong . parse <$> readFile file 
