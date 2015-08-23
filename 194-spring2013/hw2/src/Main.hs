@@ -19,4 +19,4 @@ main = do
     putStrLn "...]\n"
     putStrLn $ "total results of testWhatWentWrong == testSolution: "
                ++ show (error1 == error2)
-    putStrLn "\ndone..." 
+    putStrLn "\ndone..."

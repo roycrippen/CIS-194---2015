@@ -1,0 +1,18 @@
+name: hw3
+version: 0.1.0.0
+cabal-version: >=1.18
+build-type: Simple
+license: AllRightsReserved
+author: roy
+
+executable hw3
+    build-depends:
+        base -any
+    main-is: Main.hs
+    buildable: True
+    default-language: Haskell2010
+    hs-source-dirs: src
+    other-modules:
+        Golf
+    ghc-options: -O2 -Wall -threaded -rtsopts
+
