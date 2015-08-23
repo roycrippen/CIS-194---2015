@@ -44,21 +44,17 @@ localMaxima _ = []                       -- will end when there are less than th
 -- exercise 3 ---------------
 histogram :: [Integer] -> String
 histogram xs = concat build ++ "==========\n" ++ "0123456789\n"
-  where
-    build = map ((++ "\n") . f) . reverse . transpose . group $ sort xs
+    where build = map ((++ "\n") . f) . reverse . transpose . group $ sort xs
 
 f :: [Integer] -> String
-f ls = go n' ls [] where           -- map over n' looking for matches in the list
-    n' = [0,1,2,3,4,5,6,7,8,9]     -- f [0,2,4,6,8] == "* * * * * "
-    go ns xs ys = foldr (\n -> (:) (if n `elem` xs then '*' else ' ')) ys ns
+f ls = go [0..9] ls []              -- map over n' looking for matches in the list
+    where go ns xs ys = foldr (\n -> (:) (if n `elem` xs then '*' else ' ')) ys ns
 
 -- histogram' with intermediate steps to explain histogram
 histogram' :: [Integer] -> String
 histogram' xs = answer
-  where
-    orderLst = reverse . transpose . group $ sort xs  -- order group and transpose list
-                                                      -- orderLst [1,4,5,4,6,6,3,4,2,4,9] =
-                                                      -- [[4],[4],[4,6],[1,2,3,4,5,6,9]]
-                                                      -- ready to build histogram string
-    buildStr = map ((++ "\n") . f) orderLst           -- helper function f that does the real work
-    answer = concat buildStr ++ "==========\n" ++ "0123456789\n"
+    where orderLst = reverse . transpose . group $ sort xs  -- order group and transpose list
+                -- orderLst [1,4,5,4,6,6,3,4,2,4,9] = [[4],[4],[4,6],[1,2,3,4,5,6,9]]
+                -- ready to build histogram string, helper function f that does the real work
+          buildStr = map ((++ "\n") . f) orderLst
+          answer = concat buildStr ++ "==========\n" ++ "0123456789\n"
