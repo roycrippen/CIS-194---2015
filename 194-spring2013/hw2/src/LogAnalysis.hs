@@ -9,9 +9,9 @@ import           Log
 parseMessage :: String -> LogMessage
 parseMessage "" = Unknown "empty log message"
 parseMessage lMsg = case words lMsg of
-        ("I":ts:msg)    ->  LogMessage Info (read ts) (unwords msg)
-        ("W":ts:msg)    ->  LogMessage Warning (read ts) (unwords msg)
-        ("E":pr:ts:msg) ->  LogMessage (Error (read pr)) (read ts) (unwords msg)
+        ("I":ts:msg)    -> LogMessage Info (read ts) (unwords msg)
+        ("W":ts:msg)    -> LogMessage Warning (read ts) (unwords msg)
+        ("E":pr:ts:msg) -> LogMessage (Error (read pr)) (read ts) (unwords msg)
         _               -> Unknown lMsg
 
 parse :: String -> [LogMessage]
@@ -40,11 +40,9 @@ whatWentWrong :: [LogMessage] -> [String]
 whatWentWrong [] = ["empty log file"]
 whatWentWrong msgs = map (\(LogMessage _ _ msg) -> msg) eGT49Sorted
     where
-      eGT49 =
-          filter (\(LogMessage (Error n) _ _) -> n > 49) $
-          filter (\(LogMessage mType _ _ ) -> mType /= Info && mType /= Warning) msgs
+      eGT49 = filter (\(LogMessage (Error n) _ _) -> n > 49) $
+              filter (\(LogMessage mType _ _ ) -> mType /= Info && mType /= Warning) msgs
       eGT49Sorted = inOrder $ build eGT49
-
 
 -- to verify whatWentWrong is correct
 testSolution :: FilePath -> IO [String]
