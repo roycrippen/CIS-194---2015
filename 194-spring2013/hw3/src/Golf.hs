@@ -46,9 +46,8 @@ histogram :: [Integer] -> String
 histogram xs = concat build ++ "==========\n" ++ "0123456789\n"
     where build = map ((++ "\n") . f) . reverse . transpose . group $ sort xs
 
-f :: [Integer] -> String
-f ls = go [0..9] ls []              -- map over n' looking for matches in the list
-    where go ns xs ys = foldr (\n -> (:) (if n `elem` xs then '*' else ' ')) ys ns
+f :: [Integer] -> String       -- fold over [0..9] looking for matches in ls
+f ls = foldr (\x -> (:) (if x `elem` ls then '*' else ' ')) [] [0..9]
 
 -- histogram' with intermediate steps to explain histogram
 histogram' :: [Integer] -> String
