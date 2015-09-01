@@ -2,11 +2,11 @@
 -- dependency on hackage. Builds an explicit representation of the
 -- syntax tree to fold over using client-supplied semantics.
 module Parser (parseExp) where
-import Control.Applicative hiding (Const)
-import Control.Arrow
-import Data.Char
+import           Control.Applicative hiding (Const)
+import           Control.Arrow
+import           Data.Char
 --import Data.Monoid
-import Data.List (foldl')
+import           Data.List           (foldl')
 
 -- Building block of a computation with some state of type @s@
 -- threaded through it, possibly resulting in a value of type @r@
