@@ -102,9 +102,9 @@ scoreLine s = Single (scoreString s) s
 -- used for testing
 buildScoreJL :: [String] -> JoinList Score String
 buildScoreJL xs = foldl (\acc x -> acc +++ scoreLine x) Empty ls +++
-                    foldr (\x acc -> scoreLine x +++ acc) Empty rs
-                        where ls = take (length xs `div` 2) xs
-                              rs = drop (length ls) xs
+                  foldr (\x acc -> scoreLine x +++ acc) Empty rs
+                      where ls = take (length xs `div` 2) xs
+                            rs = drop (length ls) xs
 
 -- exercise 4 ----------------------------------
 instance Buffer (JoinList (Score, Size) String) where
