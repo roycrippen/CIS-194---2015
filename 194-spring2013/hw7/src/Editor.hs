@@ -1,20 +1,19 @@
-{-# LANGUAGE GeneralizedNewtypeDeriving
-           , ScopedTypeVariables
-   #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE ScopedTypeVariables        #-}
 module Editor where
 
-import System.IO
+import           System.IO
 
-import Buffer
+import           Buffer
 
-import Control.Exception
-import Control.Monad.State
+import           Control.Exception
+import           Control.Monad.State
 
-import Control.Applicative
-import Control.Arrow       (first, second)
+import           Control.Applicative
+import           Control.Arrow       (first, second)
 
-import Data.Char
-import Data.List
+import           Data.Char
+import           Data.List
 
 -- Editor commands
 
@@ -35,7 +34,7 @@ commands = map show [View, Edit, Next, Prev, Quit]
 -- Editor monad
 
 newtype Editor b a = Editor (StateT (b,Int) IO a)
-  deriving (Functor, Monad, MonadIO, MonadState (b,Int))
+  deriving (Functor, Monad, MonadIO, MonadState (b,Int), Applicative)
 
 runEditor :: Buffer b => Editor b a -> b -> IO a
 runEditor (Editor e) b = evalStateT e (b,0)
@@ -107,7 +106,7 @@ doCommand Edit = do
   modBuffer $ replaceLine l new
 
 doCommand (Load filename) = do
-  mstr <- io $ handle (\(_ :: IOException) -> 
+  mstr <- io $ handle (\(_ :: IOException) ->
                          putStrLn "File not found." >> return Nothing
                       ) $ do
                  h <- openFile filename ReadMode
