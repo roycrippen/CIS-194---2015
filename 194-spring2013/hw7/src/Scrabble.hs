@@ -12,8 +12,8 @@ getScore :: Score -> Int
 getScore (Score i) = i
 
 instance Monoid Score where
-  mempty  = Score 0
-  mappend = (+)
+    mempty  = Score 0
+    mappend = (+)
 
 score :: Char -> Score
 score c
