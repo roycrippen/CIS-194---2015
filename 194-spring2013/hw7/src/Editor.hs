@@ -67,7 +67,7 @@ readMay s = case reads s of
 -- Main editor loop
 
 editor :: Buffer b => Editor b ()
-editor = io (hSetBuffering stdout NoBuffering) >> loop
+editor = io (hSetBuffering stdout NoBuffering) >> doCommand Help >> loop
     where loop = do prompt
                     cmd <- getCommand
                     when (cmd /= Quit) (doCommand cmd >> loop)
@@ -91,7 +91,7 @@ doCommand :: Buffer b => Command -> Editor b ()
 doCommand View = do
   cur  <- getCurLine
   let ls = [(cur - 2) .. (cur + 2)]
-  ss <- mapM (\l -> onBuffer $ line l) ls
+  ss <- mapM (onBuffer . line) ls
   zipWithM_ (showL cur) ls ss
  where
   showL _ _ Nothing  = return ()
@@ -122,13 +122,15 @@ doCommand Prev = modCurLine (subtract 1) >> doCommand View
 doCommand Quit = return ()  -- do nothing, main loop notices this and quits
 
 doCommand Help = io . putStr . unlines $
-  [ "v --- view the current location in the document"
+  [ ""
+  , "v --- view the current location in the document"
   , "n --- move to the next line"
   , "p --- move to the previous line"
   , "l --- load a file into the editor"
   , "e --- edit the current line"
   , "q --- quit"
   , "? --- show this list of commands"
+  , ""
   ]
 
 doCommand Noop = return ()
