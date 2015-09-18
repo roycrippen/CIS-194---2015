@@ -4,7 +4,7 @@ module Party where
 import           Data.List   (sort)
 import           Data.Monoid (Monoid, mappend, mconcat, mempty)
 import           Data.Tree   (Tree (Node))
-import           Employee (Employee (empName, empFun), GuestList (GL))
+import           Employee    (Employee (empName, empFun), GuestList (GL))
 
 -- exercise 1 -----------------------------------
 glCons :: Employee -> GuestList -> GuestList
@@ -34,5 +34,5 @@ maxFun = uncurry moreFun . treeFold nextLevel
 -- exercise 5 -----------------------------------
 glPrintStr :: GuestList -> String
 glPrintStr (GL emps fun) =
-    "Total fun score of " ++ show fun ++ " from " ++ show (length emps) ++ " guests:\n\n"
-     ++ (unlines . sort . map empName) emps
+    "Total fun score of " ++ show fun ++ " from " ++ show (length emps)
+    ++ " guests:\n\n" ++ (unlines . sort . map empName) emps
