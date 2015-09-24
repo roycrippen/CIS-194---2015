@@ -5,7 +5,7 @@ import           System.Directory (doesFileExist)
 
 main :: IO ()
 main = do
-    putStrLn "homework 7...\n"
+    putStrLn "homework 8...\n"
     p <- doesFileExist "company.txt"
     if not p
         then putStrLn "company.txt not found."
