@@ -63,7 +63,7 @@ instance Applicative Parser where
     p1 <*> p2 = Parser r
         where r s = case runParser p1 s of
                     Nothing -> Nothing
-                    Just (v, s') -> first v <$>  runParser p2 s'
+                    Just (v, s') -> first v <$> runParser p2 s'
 
 -- exercise 3 ----------------------------------------------
 abParser :: Parser (Char, Char)
