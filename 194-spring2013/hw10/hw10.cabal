@@ -7,9 +7,7 @@ author: roy
 
 executable hw10
     build-depends:
-        base -any,
-        directory -any,
-        containers -any
+        base -any
     main-is: Main.hs
     buildable: True
     default-language: Haskell2010
