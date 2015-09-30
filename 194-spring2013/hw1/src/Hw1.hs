@@ -1,9 +1,4 @@
-module Main
-    ( main,
-      lastDigit
-    ) where
-
-
+module Main where
 
 main :: IO ()
 main = do

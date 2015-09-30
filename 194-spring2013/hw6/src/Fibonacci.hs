@@ -16,13 +16,13 @@ fibs1 = map fib [0..]
 -- exercise 2 ----------------------------------
 fibs2 :: [Integer]
 fibs2 = 0 : 1 : go 0 1
-  where go a b = (a + b) : go b (a + b)
+    where go a b = (a + b) : go b (a + b)
 
 -- exercise 3 ----------------------------------
 data Stream a = a `Cons` (Stream a)
 
 streamToList :: Stream a -> [a]
-streamToList (a `Cons` xs) =  a : streamToList xs
+streamToList (a `Cons` xs) = a : streamToList xs
 
 instance Show a => Show (Stream a) where
     show a = "[" ++ intercalate "," (map show $ take 20 $ streamToList a) ++ ",...]"
