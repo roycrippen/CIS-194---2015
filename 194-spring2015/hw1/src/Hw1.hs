@@ -20,15 +20,13 @@ toRevDigits n
 -- Exercise 3 -----------------------------------------
 -- Double every second number in a list starting on the left.
 doubleEveryOther :: [Integer] -> [Integer]
-doubleEveryOther []  = []
-doubleEveryOther [x] = [x]
+doubleEveryOther []         = []
+doubleEveryOther [x]        = [x]
 doubleEveryOther (x1:x2:xs) = x1 : x2 * 2 :  doubleEveryOther xs
 
 -- Exercise 4 -----------------------------------------
 -- flatten multi-digit ints to single digit
 toRevDigitsList :: [Integer] -> [Integer]
---toRevDigitsList [] = []
---toRevDigitsList (x:xs) = toRevDigits x ++ toRevDigitsList xs
 toRevDigitsList = foldr ((++) . toRevDigits) []
 
 -- Calculate the sum of all the digits in every Integer.
