@@ -12,6 +12,9 @@ instance Show Failure where
     show (Fail s as) = "Failed Test \"" ++ s
                        ++ "\" on inputs " ++ show as
 
+instance Show Test where
+    show (Test s _ _) = s ++ "\n"
+
 runTest :: Test -> Maybe Failure
 runTest (Test s f as) = case filter (not . f) as of
                           [] -> Nothing

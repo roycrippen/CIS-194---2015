@@ -63,11 +63,10 @@ allTests = concat [ ex1Tests
                   ]
 main :: IO ()
 main = do
-    putStrLn "\n"
-    putStrLn "running tests..."
+    putStrLn "\nrunning tests..."
     print allTests
     let a = runTests allTests
     if null a
-        then putStrLn "all tests ok"
+        then putStrLn "all unit tests ok"
         else print a
 

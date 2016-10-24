@@ -1,17 +1,12 @@
 module Hw2 where
+
 import           Control.Monad
 
--- Mastermind -----------------------------------------
-
--- A peg can be one of six colors
 data Peg = Red | Green | Blue | Yellow | Orange | Purple
          deriving (Show, Eq, Ord)
 
--- A code is defined to simply be a list of Pegs
 type Code = [Peg]
 
--- A move is constructed using a Code and two integers; the number of
--- exact matches and the number of regular matches
 data Move = Move Code Int Int
           deriving (Show, Eq)
 
@@ -24,7 +19,6 @@ getEm (Move _ em _) = em
 getNem :: Move -> Int
 getNem (Move _ _ nem) = nem
 
--- List containing all of the different Pegs
 colors :: [Peg]
 colors = [Red, Green, Blue, Yellow, Orange, Purple]
 
