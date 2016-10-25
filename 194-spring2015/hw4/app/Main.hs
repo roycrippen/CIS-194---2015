@@ -1,29 +1,24 @@
 module Main where
 
-import Hw4
-import Testing
-import Hw4Tests
+import           Hw4
 
 main :: IO()
 main = do
-    putStrLn "\nrunning tests..."
-    let a = runTests allTests
-    if null a then putStrLn "all unit tests ok\n" else print a
-
-
+    putStrLn "CIS 194, Spring 2015 assignment 3"
+    putStrLn ""
     let p1 = 3*x^3 + 2*x^2 + x + 10 :: Poly Int
         v1 = applyP p1 10
-    print (p1, "apply 10 to x ->", v1)
+    putStrLn $ "for " ++ show p1 ++ ", apply x to 10 = " ++ show v1
 
-    putStrLn "\nbig foil"
-    print ("(3*x^3 + 2*x^2 + x + 10)^3 = ", p1^3)
+    putStrLn "\nbig foil of (3*x^3 + 2*x^2 + x + 10)^3 = "
+    print $ p1^3
 
     putStrLn "\nderivitives"
-    print (p1, deriv p1)
+    putStrLn $ "d/dx " ++ show p1 ++ " = " ++ show (deriv p1)
     let p2 = P[1.1,2.2,3.3] :: Poly Double
-    print (p2, deriv p2)
+    putStrLn $ "d/dx " ++ show p2 ++ " = " ++ show (deriv p2)
     let p3 = x^2 + 3*x + 5 :: Poly Int
-    print (p3, deriv p3)
+    putStrLn $ "d/dx " ++ show p3 ++ " = " ++ show (deriv p3)
 
     putStrLn "\nnth derivitive n = 1 -> 6"
     print (5*x^5 + 5*x^4 + 5*x^3 + 5*x^2 + 5*x + 5)

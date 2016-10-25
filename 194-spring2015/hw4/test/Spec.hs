@@ -1,5 +1,3 @@
-module Hw4Tests where
-
 import           Hw4
 import           Testing
 
@@ -152,3 +150,15 @@ allTests = concat [ ex1Tests
                   , ex7Tests
                   , ex8Tests
                   ]
+
+main :: IO()
+main = do
+    putStrLn "\nrunning tests..."
+    print allTests
+    let a = runTests allTests
+    if null a
+        then putStrLn "all unit tests ok\n"
+        else print a
+    putStrLn "done..."
+
+

@@ -1,16 +1,9 @@
--- CIS 194, Spring 2015
---
--- Test cases for HW 01
-
-module Hw3Tests where
-
-import Hw3
-import Testing
-import qualified Data.Map as Map
-import System.Random
-import Data.List
-import Control.Applicative
-
+import           Control.Applicative
+import           Data.List
+import qualified Data.Map            as Map
+import           Hw3
+import           System.Random
+import           Testing
 
 -- Exercise 1 -----------------------------------------
 ex1Tests :: [Test]
@@ -45,7 +38,6 @@ ex2Tests = [ testF2 "evalE: test execution of expression" evalE
              , (Map.fromList [("a",1),("b",2),("c",3)], Op (Var "c") Eql (Var "c"), 1)
              ]
            ]
-
 
 -- All Tests -----------------------------------------
 allTests :: [Test]
@@ -86,3 +78,39 @@ fib n =
         0 -> 0
         1 -> 1
         _ -> fib(n - 1) + fib(n - 2)
+
+
+
+main :: IO()
+main = do
+    putStrLn "\nrunning tests..."
+    print allTests
+    let a = runTests allTests
+    if null a
+        then putStrLn "all unit tests ok\n"
+        else print a
+
+     -- 100 random systems tests of factorial 0 to factorial 12
+    factList <- sample 100 [0..12]
+    let factResultList = map factRun factList
+    let factMsg = if False `notElem` factResultList
+                     then "\n100 random tests of factorial 0 to 12 passed"
+                     else "\nsomething failed on 100 tests of factorail 0 to 12"
+    putStrLn factMsg
+
+     -- 100 random systems tests of int sqrt 0 to sqrt 1000
+    sqrtList <- sample 100 [0..1000]
+    let sqrtResultList = map sqrtRun sqrtList
+    let sqrtMsg = if False `notElem` sqrtResultList
+                     then "100 random tests of int square root 0 to 1000 passed"
+                     else "something failed on 100 tests of int square root 0 to 1000"
+    putStrLn sqrtMsg
+
+     -- 100 random systems tests of fib 0 to fib 30
+    fibList <- sample 100 [0..30]
+    let fibResultList = map fibRun fibList
+    let fibMsg = if False `notElem` fibResultList
+                     then "100 random tests of fib 0 to 30 passed"
+                     else "something failed on 100 tests of fib 0 to 30"
+    putStrLn fibMsg
+    putStrLn "done..."

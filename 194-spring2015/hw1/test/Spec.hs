@@ -69,4 +69,5 @@ main = do
     if null a
         then putStrLn "all unit tests ok"
         else print a
+    putStrLn "done..."
 
