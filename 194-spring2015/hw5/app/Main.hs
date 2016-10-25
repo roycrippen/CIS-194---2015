@@ -7,7 +7,7 @@ main :: IO()
 main = do
     let pathStr = "./data/"
         cnt :: Int
-        cnt = 10   -- default number of time to run, change with last arg
+        cnt = 1   -- default number of time to run, change with last arg
     args <- getArgs
     crim <-
         case args of

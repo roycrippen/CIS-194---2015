@@ -1,5 +1,8 @@
-{-# LANGUAGE RecordWildCards, OverloadedStrings #-}
-module Parser ( encodePretty
+{-# LANGUAGE DeriveGeneric     #-}
+{-# LANGUAGE FlexibleInstances #-}
+
+module Parser (
+                encodePretty
               , decode
               , Transaction(..)
               , TId
@@ -7,10 +10,11 @@ module Parser ( encodePretty
               , ToJSON(..)
               ) where
 
-import Data.Aeson
-import Data.Aeson.Encode.Pretty (encodePretty)
-import Data.Monoid              (mempty)
-import Control.Applicative      ((<$>), (<*>))
+import           Control.Applicative      ((<$>), (<*>))
+import           Data.Aeson
+import           Data.Aeson.Encode.Pretty (encodePretty)
+import           Data.Monoid              (mempty)
+import           GHC.Generics
 
 type TId = String
 
@@ -19,19 +23,9 @@ data Transaction = Transaction { from   :: String
                                , amount :: Integer
                                , tid    :: TId
                                }
-                   deriving (Show, Eq)
-
-instance FromJSON Transaction where
-    parseJSON (Object v) = Transaction   <$>
-                           v .: "from"   <*>
-                           v .: "to"     <*>
-                           v .: "amount" <*>
-                           v .: "tid"
-    parseJSON _ = mempty
+                   deriving (Generic, Show, Eq)
 
 instance ToJSON Transaction where
-    toJSON Transaction{..} = object [ "from"   .= from
-                                    , "to"     .= to
-                                    , "amount" .= amount
-                                    , "tid"    .= tid
-                                    ]
+    toEncoding = genericToEncoding defaultOptions
+
+instance FromJSON Transaction

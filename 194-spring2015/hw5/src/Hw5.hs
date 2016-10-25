@@ -1,13 +1,13 @@
 module Hw5 ( getSecret
-          , decryptWithKey
-          , parseFile
-          , getBadTs
-          , getFlow
-          , getCriminal
-          , undoTs
-          , writeJSON
-          , doEverything
-          ) where
+           , decryptWithKey
+           , parseFile
+           , getBadTs
+           , getFlow
+           , getCriminal
+           , undoTs
+           , writeJSON
+           , doEverything
+           ) where
 
 import           Control.Arrow
 import           Data.Bits            (xor)
@@ -49,8 +49,8 @@ parseFile fp = do
 -- Exercise 4 -----------------------------------------
 getBadTs :: FilePath -> FilePath -> IO (Maybe [Transaction])
 getBadTs fVictims fTransactions = do
-    vics  <- parseFile fVictims
-    trans <- parseFile fTransactions
+    vics  <- parseFile fVictims :: IO (Maybe [TId])
+    trans <- parseFile fTransactions :: IO (Maybe [Transaction])
     case (vics, trans) of
         (Nothing, _)     -> return Nothing
         (_, Nothing)     -> return Nothing
