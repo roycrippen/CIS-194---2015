@@ -1,10 +1,4 @@
-{-
-to run tests -----------------------
-   cabal configure --enable-tests
-   cabal build
-   cabal test      or   cabal test --show-details=always
-   best is to run test executable from dist/build/<test dir>...
--}
+-- to run tests: stack test
 
 import           Hw6
 import           Test.Framework                       (defaultMain, testGroup)

@@ -1,38 +1,35 @@
-name: hw6
-version: 0.1.0.0
-cabal-version: >=1.18
-build-type: Simple
-license: AllRightsReserved
-author: roy
+name:                hw6
+version:             0.1.0.0
+author:              roy crippen
+maintainer:          roycrippen@gmail.com
+build-type:          Simple
+cabal-version:       >=1.10
 
-executable hw6
-    build-depends:
-        base -any,
-        QuickCheck -any,
-        HUnit -any,
-        test-framework -any,
-        test-framework-quickcheck2 -any,
-        test-framework-hunit -any
-    main-is: Main.hs
-    buildable: True
-    default-language: Haskell2010
-    hs-source-dirs: src
-    other-modules:
-        Hw6
-    ghc-options: -O2 -threaded -rtsopts 
+library
+  hs-source-dirs:      src
+  exposed-modules:     Hw6
+  build-depends:       base >= 4.7 && < 5
+  default-language:    Haskell2010
 
-test-suite hw6Test
-    build-depends:
-        base -any,
-        QuickCheck -any,
-        HUnit -any,
-        test-framework -any,
-        test-framework-quickcheck2 -any,
-        test-framework-hunit -any
-    type: exitcode-stdio-1.0
-    main-is: Hw6Tests.hs
-    buildable: True
-    default-language: Haskell2010
-    hs-source-dirs: test src
-    -- other-modules:
-    
+executable hw6-exe
+  hs-source-dirs:      app
+  main-is:             Main.hs
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  build-depends:       base
+                     , hw6
+  default-language:    Haskell2010
+
+test-suite hw6-test
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test
+  main-is:             Spec.hs
+  build-depends:       base
+                     , hw6
+                     , QuickCheck
+                     , HUnit
+                     , test-framework
+                     , test-framework-quickcheck2
+                     , test-framework-hunit
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  default-language:    Haskell2010
+

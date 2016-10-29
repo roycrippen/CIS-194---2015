@@ -1,6 +1,7 @@
 {-# OPTIONS_GHC -Wall #-}
 
 module Hw6 where
+
 import Data.List
 
 -- Exercise 1 -----------------------------------------
