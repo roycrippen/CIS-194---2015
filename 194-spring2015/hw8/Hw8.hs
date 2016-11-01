@@ -5,6 +5,8 @@
 {-# LANGUAGE TypeFamilies      #-}
 {-# LANGUAGE TypeOperators     #-}
 {-# OPTIONS_GHC -fwarn-incomplete-patterns #-}
+
+-- just load in ghci, type checking means proofs accepted 
 module Hw8 where
 
 import           Prelude (Eq (..), Show (..), flip, ($), (.))

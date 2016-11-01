@@ -7,10 +7,10 @@ module Hw7 where
 import           Cards
 import           Control.Monad        (liftM2, replicateM)
 import           Control.Monad.Random (Rand, getRandom, getRandomR)
-import           Data.Functor
 import           Data.Monoid
 import           Data.Vector          (Vector, (!), (!?), (//))
 import qualified Data.Vector          as V
+import           System.IO
 import           System.Random
 
 --- Exercise 1 -----------------------------------------
@@ -162,6 +162,7 @@ repl s@State{..} | money <= 0  = putStrLn "You ran out of money!"
                  | otherwise   = do
   putStrLn $ "You have \ESC[32m$" ++ show money ++ "\ESC[0m"
   putStr "Would you like to play (y/n)? "
+  hFlush stdout
   cont <- getLine
   if cont == "n"
   then putStrLn $ "You left the casino with \ESC[32m$"
@@ -171,6 +172,7 @@ repl s@State{..} | money <= 0  = putStrLn "You ran out of money!"
                       ++ show money ++ "\ESC[0m"
           play = do
             putStr "How much do you want to bet? "
+            hFlush stdout
             amt' <- readMaybe <$> getLine  --fixes read error
             let amt = maybe 0 (+0) amt' -- Nothing -> 0 else amount
             if amt < 1 || amt > money
@@ -187,6 +189,7 @@ repl s@State{..} | money <= 0  = putStrLn "You ran out of money!"
                 _ -> deckEmpty
           war (State m d) amt = do
             putStrLn "War!"
+            hFlush stdout
             case getCards 6 d of
               Just ([c11, c21, c12, c22, c13, c23], d') -> do
                 putStrLn $ "You got:" ++ ([c11, c12, c13] >>= show)
