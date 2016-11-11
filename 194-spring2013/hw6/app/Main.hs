@@ -1,10 +1,11 @@
 module Main where
 
-import Fibonacci
+import           Fibonacci
 
 main :: IO ()
 main = do
-    putStrLn "homework 6..."
+    putStrLn "CIS 194, Spring 2013 assignment 6"
+    putStrLn ""
     print "take 26 fibs1"
     print (take 26 fibs1)
     print ("take 30 fibs1 == take 30 fibs2", take 30 fibs1 == take 30 fibs2)

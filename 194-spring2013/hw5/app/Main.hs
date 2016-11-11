@@ -5,7 +5,8 @@ import           StackVM
 
 main :: IO ()
 main = do
-    putStrLn "homework 5..."
+    putStrLn "CIS 194, Spring 2013 assignment 5"
+    putStrLn ""
     putStrLn $ "\nevalStr \"((2+3)*10) + 50\" == 100 = " ++ show (evalStr "((2+3)*10)+50")
     putStrLn "\ntestExp = parseExp lit add mul \"(3 * -4) + 5\""
     putStrLn $ "testExp :: Maybe Integer = " ++ show testInteger

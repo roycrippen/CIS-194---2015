@@ -2,7 +2,7 @@
 {-# OPTIONS_GHC -fno-warn-missing-methods #-}
 module Fibonacci where
 
-import Data.List (intercalate, transpose)
+import           Data.List (intercalate, transpose)
 
 -- exercise 1 ----------------------------------
 fib :: Integer -> Integer
